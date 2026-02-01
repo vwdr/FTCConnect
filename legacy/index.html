@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FTCConnect</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="hero">
+        <p class="eyebrow">FTC Team Finder</p>
+        <h1>FTCConnect</h1>
+        <p class="subtitle">Find and connect with FTC teams in your area.</p>
+      </header>
+
+      <section class="map-wrap" aria-label="FTC team map">
+        <div id="map"></div>
+        <div class="map-overlay" id="map-status">Drop in to see FTC teams near you.</div>
+      </section>
+
+      <div class="cta-row">
+        <button class="btn ghost" id="locate-me">Use my location</button>
+        <button class="btn primary" id="open-link-form">Link your team</button>
+      </div>
+    </div>
+
+    <div class="modal" id="link-modal" aria-hidden="true" role="dialog" aria-labelledby="link-title">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 id="link-title">Link your team</h2>
+          <button class="icon-btn" id="close-modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form class="link-form" id="link-form">
+          <div class="field">
+            <label for="team-name">Team Name</label>
+            <input id="team-name" name="teamName" type="text" placeholder="e.g. RoboHawks" required />
+          </div>
+          <div class="field">
+            <label for="team-number">Team Number</label>
+            <input id="team-number" name="teamNumber" type="text" placeholder="e.g. 1234" required />
+          </div>
+          <div class="field">
+            <label for="team-location">Meeting Location</label>
+            <div class="autocomplete" role="combobox" aria-expanded="false" aria-owns="address-suggestions">
+              <input
+                id="team-location"
+                name="meetingLocation"
+                type="search"
+                placeholder="Start typing an address"
+                autocomplete="off"
+                aria-autocomplete="list"
+                aria-controls="address-suggestions"
+                required
+              />
+              <button class="clear-btn" type="button" aria-label="Clear address">&times;</button>
+              <div class="suggestions" id="address-suggestions" role="listbox"></div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="team-contact">Contact Information/Application</label>
+            <input id="team-contact" name="contactInfo" type="url" placeholder="https://..." required />
+          </div>
+          <div class="field full">
+            <label for="team-description">Description</label>
+            <textarea
+              id="team-description"
+              name="description"
+              rows="3"
+              placeholder="What makes your team special?"
+              required
+            ></textarea>
+          </div>
+          <div class="modal-actions full">
+            <button class="btn primary" type="submit">Submit</button>
+            <button class="btn ghost" id="close-modal-bottom" type="button">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+      onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js';"
+    ></script>
+    <script src="app.js"></script>
+  </body>
+</html>
