@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const DEFAULT_CENTER = [39.8283, -98.5795];
 
@@ -14,14 +14,14 @@ const escapeHtml = (value) =>
 
 const isUrl = (value) => /^https?:\/\//i.test(value);
 const looksLikeDomain = (value) =>
-  /\\./.test(value) && !/\\s/.test(value) && !/^@/.test(value);
+  /\.[a-z]{2,}/i.test(value) && !/\s/.test(value) && !/^@/.test(value);
 const normalizeUrl = (value) => {
   if (isUrl(value)) return value;
   if (looksLikeDomain(value)) return `https://${value}`;
   return value;
 };
 const isEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-const isPhoneLike = (value) => /[0-9]/.test(value) && /^[+()0-9\\s.-]+$/.test(value);
+const isPhoneLike = (value) => /[0-9]/.test(value) && /^[+()0-9\s.-]+$/.test(value);
 const detectContactLabel = (value) => {
   const lower = value.toLowerCase();
   if (lower.includes("discord")) return "Discord";
@@ -45,6 +45,8 @@ export default function TeamMap({ teams = [], userLocation, userRadiusMiles = 15
   const iconRef = useRef(null);
   const accentRef = useRef("#e10600");
   const leafletRef = useRef(null);
+  const hasFitRef = useRef(false);
+  const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) {
@@ -68,9 +70,14 @@ export default function TeamMap({ teams = [], userLocation, userRadiusMiles = 15
         4
       );
       L.control.zoom({ position: "bottomright" }).addTo(map);
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-        maxZoom: 19,
-        attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+      // Esri's dark gray canvas needs no API key (CARTO's dark_all now does).
+      const esri = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
+      L.tileLayer(`${esri}/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}`, {
+        maxZoom: 16,
+        attribution: "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, &copy; OpenStreetMap contributors",
+      }).addTo(map);
+      L.tileLayer(`${esri}/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}`, {
+        maxZoom: 16,
       }).addTo(map);
 
       const accent =
@@ -87,6 +94,7 @@ export default function TeamMap({ teams = [], userLocation, userRadiusMiles = 15
       });
 
       mapRef.current = map;
+      setMapReady(true);
 
       handleResize = () => {
         map.invalidateSize({ animate: false });
@@ -161,7 +169,16 @@ export default function TeamMap({ teams = [], userLocation, userRadiusMiles = 15
       );
       markersRef.current.set(team.id, marker);
     });
-  }, [teams]);
+
+    // Zoom to the teams the first time they load, unless the user has located themselves.
+    if (!hasFitRef.current && !userLocation && markersRef.current.size) {
+      const bounds = L.latLngBounds(
+        Array.from(markersRef.current.values(), (marker) => marker.getLatLng())
+      );
+      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 11 });
+      hasFitRef.current = true;
+    }
+  }, [teams, mapReady, userLocation]);
 
   useEffect(() => {
     const map = mapRef.current;

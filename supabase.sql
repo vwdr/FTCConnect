@@ -54,3 +54,12 @@ drop trigger if exists set_teams_updated_at on public.teams;
 create trigger set_teams_updated_at
 before update on public.teams
 for each row execute function public.set_updated_at();
+
+-- Seeded (unclaimed) team listings have no owner. RLS still blocks edits/deletes
+-- on them because auth.uid() = null is never true.
+alter table public.teams
+  alter column user_id drop not null;
+
+create unique index if not exists teams_seeded_team_number_idx
+  on public.teams(team_number)
+  where user_id is null;

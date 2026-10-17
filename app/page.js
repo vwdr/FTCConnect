@@ -81,11 +81,17 @@ export default function Home() {
       return;
     }
 
-    const normalized = (data || []).map((team) => ({
-      ...team,
-      lat: Number(team.lat),
-      lng: Number(team.lng),
-    }));
+    // Hide a seeded (unowned) listing once the real team has linked itself.
+    const claimedNumbers = new Set(
+      (data || []).filter((team) => team.user_id).map((team) => team.team_number)
+    );
+    const normalized = (data || [])
+      .filter((team) => team.user_id || !claimedNumbers.has(team.team_number))
+      .map((team) => ({
+        ...team,
+        lat: Number(team.lat),
+        lng: Number(team.lng),
+      }));
     setTeams(normalized);
     setMapStatus(
       normalized.length

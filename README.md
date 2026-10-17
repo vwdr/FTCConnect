@@ -20,6 +20,15 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Database setup
+
+In the Supabase dashboard, open **SQL Editor** and run, in order:
+
+1. `supabase.sql` – creates the `teams` table, RLS policies, and allows unowned (seeded) listings.
+2. `supabase/seed_teams.sql` – loads 112 active NJ-region FTC teams sourced from [FTCScout](https://ftcscout.org). Safe to re-run; it updates existing seeded rows.
+
+Seeded listings have no owner. When a team links itself through the app, its own listing replaces the seeded one on the map.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
