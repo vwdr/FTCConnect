@@ -48,7 +48,7 @@ export default async function TeamsDirectoryPage() {
             <article className="team-card" key={team.id}>
               <p className="team-card-kicker">FIRST Tech Challenge</p>
               <h2>
-                <Link href={\`/teams/\${encodeURIComponent(team.team_number)}\`}>
+                <Link href={"/teams/" + encodeURIComponent(team.team_number)}>
                   {team.name}
                 </Link>
               </h2>
@@ -57,7 +57,7 @@ export default async function TeamsDirectoryPage() {
               <p className="team-description">{team.description}</p>
               <Link
                 className="team-card-link"
-                href={\`/teams/\${encodeURIComponent(team.team_number)}\`}
+                href={"/teams/" + encodeURIComponent(team.team_number)}
               >
                 View team profile
               </Link>
