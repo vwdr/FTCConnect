@@ -58,7 +58,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={\`\${space.variable} \${bebas.variable}\`}>{children}</body>
+      <body className={[space.variable, bebas.variable].join(" ")}>{children}</body>
     </html>
   );
 }
