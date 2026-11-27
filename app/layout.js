@@ -24,6 +24,9 @@ export const metadata = {
   description:
     "Discover FIRST Tech Challenge (FTC) robotics teams near you. Explore public team listings and connect with the FTC community through FTCConnect.",
   applicationName: SITE_NAME,
+  verification: {
+    google: "X3R1nhw6UC0PxS2_nTNftxEgWN7qB17yH2avv0TJcWg",
+  },
   alternates: {
     canonical: "/",
   },
