@@ -26,21 +26,26 @@ export async function generateMetadata({ params }) {
 
   const location = getTeamLocation(team.address);
   const description =
-    \`\${team.name} is FIRST Tech Challenge robotics team #\${team.team_number}, based in \${location}. Explore its public team profile on FTCConnect.\`;
+    team.name +
+    " is FIRST Tech Challenge robotics team #" +
+    team.team_number +
+    ", based in " +
+    location +
+    ". Explore its public team profile on FTCConnect.";
 
   return {
-    title: \`FTC Team #\${team.team_number}: \${team.name}\`,
+    title: "FTC Team #" + team.team_number + ": " + team.name,
     description,
     alternates: {
-      canonical: \`/teams/\${encodeURIComponent(team.team_number)}\`,
+      canonical: "/teams/" + encodeURIComponent(team.team_number),
     },
     robots: team.user_id
       ? { index: false, follow: true }
       : { index: true, follow: true },
     openGraph: {
-      title: \`\${team.name} (#\${team.team_number}) | FTCConnect\`,
+      title: team.name + " (#" + team.team_number + ") | FTCConnect",
       description,
-      url: \`\${SITE_URL}/teams/\${encodeURIComponent(team.team_number)}\`,
+      url: SITE_URL + "/teams/" + encodeURIComponent(team.team_number),
       type: "profile",
     },
   };
@@ -52,11 +57,11 @@ export default async function TeamProfilePage({ params }) {
 
   const location = getTeamLocation(team.address);
   const teamUrl = getSafeTeamUrl(team.apply_link);
-  const pageUrl = \`\${SITE_URL}/teams/\${encodeURIComponent(team.team_number)}\`;
+  const pageUrl = SITE_URL + "/teams/" + encodeURIComponent(team.team_number);
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: \`\${team.name} (FIRST Tech Challenge Team #\${team.team_number})\`,
+    name: team.name + " (FIRST Tech Challenge Team #" + team.team_number + ")",
     description: team.description,
     url: pageUrl,
     address: {
