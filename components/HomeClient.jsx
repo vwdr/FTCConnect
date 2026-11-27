@@ -428,7 +428,7 @@ export default function HomeClient({ initialTeams = [] }) {
               <ul>
                 {initialTeams.slice(0, 8).map((team) => (
                   <li key={team.id}>
-                    <a href={\`/teams/\${encodeURIComponent(team.team_number)}\`}>
+                    <a href={"/teams/" + encodeURIComponent(team.team_number)}>
                       {team.name} <span>#{team.team_number}</span>
                     </a>
                   </li>
