@@ -1,6 +1,7 @@
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
 import { Bebas_Neue, Space_Grotesk } from "next/font/google";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 const bebas = Bebas_Neue({
   subsets: ["latin"],
@@ -15,14 +16,52 @@ const space = Space_Grotesk({
 });
 
 export const metadata = {
-  title: "FTCConnect",
-  description: "Find and connect with FTC teams near you.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "FTCConnect | Find FIRST Tech Challenge Teams Near You",
+    template: "%s | FTCConnect",
+  },
+  description:
+    "Discover FIRST Tech Challenge (FTC) robotics teams near you. Explore public team listings and connect with the FTC community through FTCConnect.",
+  applicationName: SITE_NAME,
+  verification: {
+    google: "X3R1nhw6UC0PxS2_nTNftxEgWN7qB17yH2avv0TJcWg",
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: "FTCConnect | Find FIRST Tech Challenge Teams Near You",
+    description:
+      "Discover FIRST Tech Challenge robotics teams, browse public team listings, and connect with the FTC community.",
+  },
+  twitter: {
+    card: "summary",
+    title: "FTCConnect | Find FIRST Tech Challenge Teams Near You",
+    description:
+      "Discover FIRST Tech Challenge robotics teams, browse public team listings, and connect with the FTC community.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${space.variable} ${bebas.variable}`}>{children}</body>
+      <body className={[space.variable, bebas.variable].join(" ")}>{children}</body>
     </html>
   );
 }
