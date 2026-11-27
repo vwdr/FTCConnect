@@ -28,7 +28,7 @@ export default async function Home() {
     "@graph": [
       {
         "@type": "Organization",
-        "@id": \`\${SITE_URL}/#organization\`,
+        "@id": SITE_URL + "/#organization",
         name: SITE_NAME,
         url: SITE_URL,
         description:
@@ -36,10 +36,10 @@ export default async function Home() {
       },
       {
         "@type": "WebSite",
-        "@id": \`\${SITE_URL}/#website\`,
+        "@id": SITE_URL + "/#website",
         name: SITE_NAME,
         url: SITE_URL,
-        publisher: { "@id": \`\${SITE_URL}/#organization\` },
+        publisher: { "@id": SITE_URL + "/#organization" },
         inLanguage: "en-US",
       },
     ],
